@@ -5,20 +5,28 @@ import EmergencyTitle from '../components/EmergencyTitle';
 import {useNavigate} from "react-router-dom";
 import routes from "../router";
 
-function Message({id, title, type, text, numComments}) {
+function Message({id, title, type, text, numComments, date}) {
   const navigate = useNavigate();
+
+  const deleteTags = (input) => {
+    input = input.replace(/<br\/>/ig, "\n");
+    input = input.replace(/<\/?("[^"]*"|'[^']*'|[^>])*(>|$)/gi, "");
+    input = input.replace(/&nbsp;/gi, " ");
+    return input;
+  }
+
   return (
         <MessageSection onClick={() => {navigate(routes.message+id)}}>
           <div className="message-content">
             <EmergencyTitle title={title} type={type} />
-            <EmergencyText>{text}</EmergencyText>
+            <EmergencyText>{deleteTags(text)}</EmergencyText>
           </div>
           <div className="bottom">
               <Cnum>
                   <AiOutlineComment size='18'/>&nbsp;
                 {numComments}
               </Cnum>
-              <Ctime>2015/11/10 21:34:02:843</Ctime>
+              <Ctime>{date}</Ctime>
           </div>
         </MessageSection>
     );
