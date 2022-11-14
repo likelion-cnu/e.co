@@ -1,11 +1,12 @@
 import styled from "styled-components";
 import Header from "../components/Header";
+import Comment from "../components/Comment";
 
 function Home(){
   return (
     <Body>
     <Header/>
-    Home
+    <Comment />
     </Body>
   )
 }
