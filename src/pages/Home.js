@@ -1,34 +1,35 @@
 import styled from "styled-components";
-import {useEffect, useRef, useState} from "react";
+import { useEffect, useRef, useState } from "react";
 import ReactLoading from "react-loading";
 import axios from "axios";
 
-import theme from '../style/Theme';
+import theme from "../style/Theme";
 import Header from "../components/Header";
 import Message from "../components/Message";
 
-function Home(){
+function Home() {
   const target = useRef(undefined);
   const [messages, setMessages] = useState([]);
   const numOfRows = 10;
   const [pageNo, setPageNo] = useState(1);
-
 
   useEffect(() => {
     const loadMessageList = async () => {
       const response = await axios.get(process.env.REACT_APP_OPEN_URL, {
         params: {
           ServiceKey: process.env.REACT_APP_OPEN_KEY,
-          type: 'json',
+          type: "json",
           pageNo: pageNo,
-          numOfRows: numOfRows
-        }
-      })
+          numOfRows: numOfRows,
+        },
+      });
+
+      console.log(response);
       const loadMessageList = response.data.MisfortuneSituationNoticeMsg[1].row;
 
-      setMessages(messages => [...messages, ...loadMessageList])
+      setMessages((messages) => [...messages, ...loadMessageList]);
       setPageNo((pageNo) => pageNo + 1);
-    }
+    };
 
     const onIntersect = async ([entry], observer) => {
       if (entry.isIntersecting) {
@@ -50,8 +51,16 @@ function Home(){
 
   return (
     <Body>
-    <Header/>
-      {messages.map((message) => (<Message key={message.msg_id} id={message.msg_id} title={message.titl} type={message.clmy_pttn_nm} text={message.cnts1} numComments="12" date={message.inpt_date}/>) )}
+      <Header />
+      {messages.map((message) => (
+        <Message
+          key={message.md101_sn}
+          id={message.md101_sn}
+          location_name={message.location_name}
+          date={message.create_date}
+          text={message.msg}
+        />
+      ))}
       <div ref={target} className="loading">
         <ReactLoading
           type="spin"
@@ -61,14 +70,13 @@ function Home(){
         />
       </div>
     </Body>
-  )
-
+  );
 }
 
 const Body = styled.div`
   width: 100vw;
-  background: ${props => props.theme.bgGradient};
-  
+  background: ${(props) => props.theme.bgGradient};
+
   .loading {
     width: 100%;
     padding: 20px;
