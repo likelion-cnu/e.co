@@ -1,12 +1,12 @@
 import styled from "styled-components";
 
-function EmergencyTitle({title, type}){
+function EmergencyTitle({ title, date }) {
   return (
     <Ctitle>
       <div className="title">{title}</div>
-      <div className="type">{type}</div>
+      <div className="type">{date}</div>
     </Ctitle>
-  )
+  );
 }
 
 export const Ctitle = styled.div`
@@ -20,11 +20,11 @@ export const Ctitle = styled.div`
     font-weight: bold;
     display: inline-block;
   }
-  
+
   .type {
     padding-left: 10px;
     font-size: 15px;
-    color:#777777;
+    color: #777777;
     display: inline-block;
   }
 `;
