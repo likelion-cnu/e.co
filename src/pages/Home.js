@@ -25,7 +25,7 @@ function Home() {
       });
 
       console.log(response);
-      const loadMessageList = response.data.MisfortuneSituationNoticeMsg[1].row;
+      const loadMessageList = response.data.DisasterMsg[1].row;
 
       setMessages((messages) => [...messages, ...loadMessageList]);
       setPageNo((pageNo) => pageNo + 1);

@@ -43,6 +43,11 @@ const MessageSection = styled.div`
   background-color: ${(props) => props.theme.white};
   line-height: 140%;
 
+  :hover {
+    transform: scale(1.02);
+    transition: 0.17s;
+  }
+
   .message-content {
     padding: 0 30px;
   }
@@ -58,8 +63,7 @@ const MessageSection = styled.div`
 const EmergencyText = styled.div`
   font-size: 17px;
   text-align: justify;
-  line-height: 140%;
-  height: 100px;
+  line-height: 160%;
   overflow: hidden;
 `;
 
@@ -67,7 +71,7 @@ const Cnum = styled.div`
   color: ${(props) => props.theme.firstGray};
   font-size: 12px;
   float: right;
-  margin-left: 15px;
+  margin-right: 15px;
   display: flex;
   align-items: center;
 `;
