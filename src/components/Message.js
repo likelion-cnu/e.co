@@ -7,19 +7,24 @@ import axios from "axios";
 
 function Message({ id, location_name, date, text }) {
   const [numComments, setNumComments] = useState(0);
+  const [comments, setComments] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [reload, setReload] = useState(false);
+
+  const loadMessageComments = async (id) => {
+    const { data } = await axios.get(
+      process.env.REACT_APP_ECO_API + 181431 + "/comments"
+    );
+
+    const results = data.results;
+
+    setNumComments(data.count);
+    setComments(results);
+  };
 
   useEffect(() => {
-    const loadMessageComments = async (id) => {
-      const { data } = await axios.get(
-        process.env.REACT_APP_ECO_API + 181431 + "/comment"
-      );
-
-      setNumComments(data.count);
-    };
-
     loadMessageComments(id);
-  }, [id]);
+  }, [id, reload]);
 
   return (
     <MessageSection
@@ -40,7 +45,14 @@ function Message({ id, location_name, date, text }) {
           </Cnum>
         </div>
       ) : (
-        <OpenMessage id={id} />
+        <OpenMessage
+          id={id}
+          reload={reload}
+          setReload={() => {
+            setReload((reload) => !reload);
+          }}
+          comments={comments}
+        />
       )}
     </MessageSection>
   );
@@ -54,6 +66,8 @@ const MessageSection = styled.div`
   box-shadow: ${(props) => props.theme.boxShadow};
   background-color: ${(props) => props.theme.white};
   line-height: 140%;
+
+  cursor: pointer;
 
   :hover {
     transform: scale(1.02);
