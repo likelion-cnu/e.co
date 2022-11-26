@@ -24,7 +24,6 @@ function Home() {
         },
       });
 
-      console.log(response);
       const loadMessageList = response.data.DisasterMsg[1].row;
 
       setMessages((messages) => [...messages, ...loadMessageList]);

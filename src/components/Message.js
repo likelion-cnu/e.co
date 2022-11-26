@@ -2,34 +2,47 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { AiOutlineComment } from "react-icons/ai";
 import EmergencyTitle from "../components/EmergencyTitle";
-import { useNavigate } from "react-router-dom";
-import routes from "../router";
+import OpenMessage from "./OpenMessage";
+import async from "async";
+import axios from "axios";
 
 function Message({ id, location_name, date, text }) {
-  const navigate = useNavigate();
   const [numComments, setNumComments] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    // id로 백엔드와 통신 후 setNumComments();
+    const loadMessageComments = async (id) => {
+      const { data } = await axios.get(
+        process.env.REACT_APP_ECO_API + 181431 + "/comment"
+      );
+
+      setNumComments(data.count);
+    };
+
+    loadMessageComments(id);
   }, [id]);
 
   return (
     <MessageSection
       onClick={() => {
-        navigate(routes.message + id);
+        setIsOpen(true);
       }}
     >
       <div className="message-content">
         <EmergencyTitle title={location_name} date={date} />
         <EmergencyText>{text}</EmergencyText>
       </div>
-      <div className="bottom">
-        <Cnum>
-          <AiOutlineComment size="18" />
-          &nbsp;
-          {numComments}
-        </Cnum>
-      </div>
+      {!isOpen ? (
+        <div className="bottom">
+          <Cnum>
+            <AiOutlineComment size="18" />
+            &nbsp;
+            {numComments}
+          </Cnum>
+        </div>
+      ) : (
+        <OpenMessage id={id} />
+      )}
     </MessageSection>
   );
 }
@@ -49,11 +62,10 @@ const MessageSection = styled.div`
   }
 
   .message-content {
-    padding: 0 30px;
+    padding: 0 30px 15px 30px;
   }
 
   .bottom {
-    margin-top: 15px;
     height: 32px;
     border-top: ${(props) => props.theme.borderTop};
     line-height: 28px;
@@ -74,13 +86,6 @@ const Cnum = styled.div`
   margin-right: 15px;
   display: flex;
   align-items: center;
-`;
-
-const Ctime = styled.div`
-  color: ${(props) => props.theme.firstGray};
-  font-size: 12px;
-  float: right;
-  margin-right: 15px;
 `;
 
 export default Message;

@@ -4,7 +4,9 @@ const Theme = {
   white: "#FFFFFF",
   firstGray: "#969696",
   boxShadow: "0px 5px 10px rgba(0, 0, 0, 0.1)",
-  borderTop: "2px solid #F1F1F1",
+  borderTop: "1px solid #F1F1F1",
+  border: "1px solid #dedede",
+  borderRadius: "10px",
 };
 
 export default Theme;

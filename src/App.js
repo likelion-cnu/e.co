@@ -18,13 +18,13 @@ function AppRouter() {
   );
 }
 
-function App(){
+function App() {
   return (
     <StyledThemeProvider theme={Theme}>
       <GlobalStyle />
       <AppRouter />
     </StyledThemeProvider>
-  )
+  );
 }
 
 const GlobalStyle = createGlobalStyle`
@@ -34,23 +34,17 @@ const GlobalStyle = createGlobalStyle`
     text-decoration: none;
     color: inherit;
   }
-  i {
-    //color: ${Theme.placeholderColor};
-  }
+  
   * {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     text-decoration: none;
     letter-spacing: -0.017em;
-  }
-  html {
-    font-family: 'Noto Sans KR', sans-serif;
-  }
-  body {
     font-family: 'Noto Sans KR', sans-serif;
     font-weight: 400;
   }
+  
   button {
     padding: 0;
   }
