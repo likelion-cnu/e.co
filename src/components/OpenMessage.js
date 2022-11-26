@@ -1,10 +1,9 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import INIT_EMOTIONS from "../constant/INIT_EMOTIONS";
+import Emotions from "./Emotions";
 
 function OpenMessage({ id }) {
-  const [emotionsCount, setEmotionsCount] = useState(INIT_EMOTIONS);
   const [commentInput, setCommentInput] = useState("");
   const [comments, setComments] = useState([]);
   const [reload, setReload] = useState(false);
@@ -13,59 +12,31 @@ function OpenMessage({ id }) {
     await axios.post(process.env.REACT_APP_ECO_API + 181341 + "/comment", {
       content: commentInput,
     });
+    setCommentInput("");
     setReload((reload) => !reload);
   };
 
+  const loadComments = async (id) => {
+    const { data } = await axios.get(
+      process.env.REACT_APP_ECO_API + 181341 + "/comment"
+    );
+
+    const result = data.results;
+    setComments(result);
+  };
   useEffect(() => {
-    const loadComments = async (id) => {
-      const { data } = await axios.get(
-        process.env.REACT_APP_ECO_API + 181341 + "/comment"
-      );
-
-      const result = data.results;
-      setComments(result);
-    };
-
-    const loadMessageDetails = async (id) => {
-      const { data } = await axios.get(
-        process.env.REACT_APP_ECO_API + 181341 + "/"
-      );
-      setEmotionsCount({
-        sad_cnt: data.sad_cnt,
-        angry_cnt: data.angry_cnt,
-        surprise_cnt: data.surprise_cnt,
-      });
-    };
-
-    loadMessageDetails(id);
     loadComments(id);
   }, [id, reload]);
 
   return (
     <Section>
-      <EmotionSection>
-        <Emotion>
-          <div id="emoji">
-            <img src="https://img.icons8.com/color/48/null/crying--v1.png" />
-            <div id="emotion_num">{emotionsCount.sad_cnt}</div>
-          </div>
-          <div id="title">슬퍼요</div>
-        </Emotion>
-        <Emotion>
-          <div id="emoji">
-            <img src="https://img.icons8.com/color/48/null/angry--v1.png" />
-            <div id="emotion_num">{emotionsCount.angry_cnt}</div>
-          </div>
-          <div id="title">화나요</div>
-        </Emotion>
-        <Emotion>
-          <div id="emoji">
-            <img src="https://img.icons8.com/color/48/null/surprised--v1.png" />
-            <div id="emotion_num">{emotionsCount.surprise_cnt}</div>
-          </div>
-          <div id="title">놀라워요</div>
-        </Emotion>
-      </EmotionSection>
+      <Emotions
+        id={id}
+        reload={reload}
+        setReload={() => {
+          setReload((reload) => !reload);
+        }}
+      />
       <CommentSection>
         <Input>
           <textarea
@@ -95,44 +66,6 @@ const Section = styled.div`
   border-top: ${(props) => props.theme.borderTop};
 `;
 
-const EmotionSection = styled.div`
-  padding: 20px 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Emotion = styled.div`
-  padding: 0 20px;
-  display: flex;
-  flex-direction: column;
-
-  #emoji {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-bottom: 5px;
-  }
-
-  #emoji img {
-    width: 30px;
-    height: 30px;
-    object-fit: cover;
-  }
-
-  #emoji div {
-    padding-left: 5px;
-    font-size: 16px;
-    color: ${(props) => props.theme.firstGray};
-  }
-
-  #title {
-    font-size: 10px;
-    text-align: center;
-    color: ${(props) => props.theme.firstGray};
-  }
-`;
-
 const CommentSection = styled.div`
   width: 100%;
   padding: 20px 0;
@@ -159,6 +92,7 @@ const Input = styled.div`
     width: 80%;
     height: 100%;
     padding: 20px;
+    border-radius: ${(props) => props.theme.borderRadius};
 
     outline: none;
     border: none;
@@ -186,7 +120,7 @@ const Input = styled.div`
 const CommentList = styled.div`
   width: 70%;
   min-width: 200px;
-  padding: 20px;
+  padding: 20px 10px 0 10px;
 
   display: flex;
   flex-direction: column;
