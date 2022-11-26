@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { AiOutlineComment } from "react-icons/ai";
 import EmergencyTitle from "../components/EmergencyTitle";
 import OpenMessage from "./OpenMessage";
-import async from "async";
 import axios from "axios";
 
 function Message({ id, location_name, date, text }) {

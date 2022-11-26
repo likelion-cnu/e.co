@@ -6,16 +6,28 @@ import INIT_EMOTIONS from "../constant/INIT_EMOTIONS";
 function OpenMessage({ id }) {
   const [emotionsCount, setEmotionsCount] = useState(INIT_EMOTIONS);
   const [commentInput, setCommentInput] = useState("");
+  const [comments, setComments] = useState([]);
+  const [reload, setReload] = useState(false);
 
   const postComment = async (id) => {
     await axios.post(process.env.REACT_APP_ECO_API + 181341 + "/comment", {
       content: commentInput,
     });
+    setReload((reload) => !reload);
   };
 
   useEffect(() => {
+    const loadComments = async (id) => {
+      const { data } = await axios.get(
+        process.env.REACT_APP_ECO_API + 181341 + "/comment"
+      );
+
+      const result = data.results;
+      setComments(result);
+    };
+
     const loadMessageDetails = async (id) => {
-      const { data } = await axios(
+      const { data } = await axios.get(
         process.env.REACT_APP_ECO_API + 181341 + "/"
       );
       setEmotionsCount({
@@ -26,7 +38,8 @@ function OpenMessage({ id }) {
     };
 
     loadMessageDetails(id);
-  }, [id]);
+    loadComments(id);
+  }, [id, reload]);
 
   return (
     <Section>
@@ -66,6 +79,11 @@ function OpenMessage({ id }) {
             등록
           </div>
         </Input>
+        <CommentList>
+          {comments.map((comment) => (
+            <div id="comment">{comment.content}</div>
+          ))}
+        </CommentList>
       </CommentSection>
     </Section>
   );
@@ -116,7 +134,9 @@ const Emotion = styled.div`
 `;
 
 const CommentSection = styled.div`
+  width: 100%;
   padding: 20px 0;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -160,6 +180,34 @@ const Input = styled.div`
     font-weight: 700;
     font-size: 14px;
     color: ${(props) => props.theme.white};
+  }
+`;
+
+const CommentList = styled.div`
+  width: 70%;
+  min-width: 200px;
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+
+  #comment {
+    margin: 5px;
+    padding: 5px 10px;
+
+    border: 1px solid #f1f1f1;
+    border-radius: ${(props) => props.theme.borderRadius};
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 19px;
+    color: ${(props) => props.theme.black};
   }
 `;
 
