@@ -6,8 +6,12 @@ import Emotions from "./Emotions";
 function OpenMessage({ id, reload, setReload, comments }) {
   const [commentInput, setCommentInput] = useState("");
 
-  const postComment = async (id) => {
-    await axios.post(process.env.REACT_APP_ECO_API + 181431 + "/comments", {
+  const postComment = async () => {
+    console.log(id, typeof id);
+    if (commentInput.replace(/ /g, "") === "") {
+      return;
+    }
+    await axios.post(process.env.REACT_APP_ECO_API + id + "/add/comments", {
       content: commentInput,
     });
     setCommentInput("");
@@ -31,11 +35,13 @@ function OpenMessage({ id, reload, setReload, comments }) {
           </div>
         </Input>
         <CommentList>
-          {comments.map((comment, index) => (
-            <div key={index} id="comment">
-              {comment.content}
-            </div>
-          ))}
+          {comments !== null
+            ? comments.map((comment, index) => (
+                <div key={index} id="comment">
+                  {comment.content}
+                </div>
+              ))
+            : undefined}
         </CommentList>
       </CommentSection>
     </Section>

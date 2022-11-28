@@ -3,19 +3,23 @@ import { useEffect, useState } from "react";
 import INIT_EMOTIONS from "../constant/INIT_EMOTIONS";
 import axios from "axios";
 
-function Emotions({ id, reload }) {
+function Emotions({ id, reload, setReload }) {
   const [emotionsCount, setEmotionsCount] = useState(INIT_EMOTIONS);
 
   const loadEmotions = async (id) => {
-    const { data } = await axios.get(
-      process.env.REACT_APP_ECO_API + 181431 + "/"
-    );
+    const { data } = await axios.get(process.env.REACT_APP_ECO_API + id);
     setEmotionsCount({
       sad_cnt: data.sad_cnt,
       angry_cnt: data.angry_cnt,
       surprise_cnt: data.surprise_cnt,
     });
   };
+
+  const putEmotion = async (e) => {
+    await axios.post(process.env.REACT_APP_ECO_API + id + "/" + e.target.id);
+    setReload();
+  };
+
   useEffect(() => {
     loadEmotions(id);
   }, [id, reload]);
@@ -24,22 +28,34 @@ function Emotions({ id, reload }) {
     <Section>
       <Emotion>
         <div id="emoji">
-          <img src="https://img.icons8.com/color/48/null/crying--v1.png" />
-          <div id="emotion_num">{emotionsCount.sad_cnt}</div>
+          <img
+            src="https://img.icons8.com/color/48/null/crying--v1.png"
+            id="sad"
+            onClick={putEmotion}
+          />
+          <div className="emotion_num">{emotionsCount.sad_cnt}</div>
         </div>
         <div id="title">슬퍼요</div>
       </Emotion>
       <Emotion>
         <div id="emoji">
-          <img src="https://img.icons8.com/color/48/null/angry--v1.png" />
-          <div id="emotion_num">{emotionsCount.angry_cnt}</div>
+          <img
+            src="https://img.icons8.com/color/48/null/angry--v1.png"
+            id="angry"
+            onClick={putEmotion}
+          />
+          <div className="emotion_num">{emotionsCount.angry_cnt}</div>
         </div>
         <div id="title">화나요</div>
       </Emotion>
       <Emotion>
         <div id="emoji">
-          <img src="https://img.icons8.com/color/48/null/surprised--v1.png" />
-          <div id="emotion_num">{emotionsCount.surprise_cnt}</div>
+          <img
+            src="https://img.icons8.com/color/48/null/surprised--v1.png"
+            id="surprise"
+            onClick={putEmotion}
+          />
+          <div className="emotion_num">{emotionsCount.surprise_cnt}</div>
         </div>
         <div id="title">놀라워요</div>
       </Emotion>

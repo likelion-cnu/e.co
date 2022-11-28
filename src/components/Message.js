@@ -13,13 +13,14 @@ function Message({ id, location_name, date, text }) {
 
   const loadMessageComments = async (id) => {
     const { data } = await axios.get(
-      process.env.REACT_APP_ECO_API + 181431 + "/comments"
+      process.env.REACT_APP_ECO_API + id + "/comments"
     );
 
-    const results = data.results;
+    // const results = data.results;
 
-    setNumComments(data.count);
-    setComments(results);
+    setNumComments(data.length);
+    setComments([...data]);
+    console.log(comments);
   };
 
   useEffect(() => {
@@ -41,7 +42,7 @@ function Message({ id, location_name, date, text }) {
           <Cnum>
             <AiOutlineComment size="18" />
             &nbsp;
-            {numComments}
+            {!numComments ? 0 : numComments}
           </Cnum>
         </div>
       ) : (
