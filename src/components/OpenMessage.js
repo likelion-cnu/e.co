@@ -41,11 +41,13 @@ function OpenMessage({ id, reload, setReload, comments }) {
         </Input>
         <CommentList>
           {comments !== null
-            ? comments.map((comment, index) => (
-                <div key={index} id="comment">
-                  {comment.content}
-                </div>
-              ))
+            ? comments.map((comment, index) =>
+                comment.content !== "" ? (
+                  <div key={index} id="comment">
+                    {comment.content}
+                  </div>
+                ) : undefined
+              )
             : undefined}
         </CommentList>
       </CommentSection>

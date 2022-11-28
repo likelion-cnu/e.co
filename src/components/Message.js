@@ -39,7 +39,7 @@ function Message({ id, location_name, date, text }) {
           <Cnum>
             <AiOutlineComment size="18" />
             &nbsp;
-            {!numComments ? 0 : numComments}
+            {!numComments ? 0 : numComments - 1}
           </Cnum>
         </div>
       ) : (
