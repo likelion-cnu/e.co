@@ -16,11 +16,8 @@ function Message({ id, location_name, date, text }) {
       process.env.REACT_APP_ECO_API + id + "/comments"
     );
 
-    // const results = data.results;
-
     setNumComments(data.length);
     setComments([...data]);
-    console.log(comments);
   };
 
   useEffect(() => {

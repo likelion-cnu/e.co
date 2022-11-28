@@ -7,7 +7,6 @@ function OpenMessage({ id, reload, setReload, comments }) {
   const [commentInput, setCommentInput] = useState("");
 
   const postComment = async () => {
-    console.log(id, typeof id);
     if (commentInput.replace(/ /g, "") === "") {
       return;
     }
@@ -15,12 +14,18 @@ function OpenMessage({ id, reload, setReload, comments }) {
       content: commentInput,
     });
     setCommentInput("");
-    setReload();
+    setReload((reload) => !reload);
   };
 
   return (
     <Section>
-      <Emotions id={id} reload={reload} setReload={setReload} />
+      <Emotions
+        id={id}
+        reload={reload}
+        setReload={() => {
+          setReload((reload) => !reload);
+        }}
+      />
       <CommentSection>
         <Input>
           <textarea
