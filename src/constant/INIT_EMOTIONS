@@ -1,0 +1,8 @@
+const INIT_EMOTIONS = {
+  angry_cnt: 0,
+  sad_cnt: 0,
+  surprise_cnt: 0,
+}
+
+Object.freeze(INIT_EMOTIONS);
+export default INIT_EMOTIONS;
